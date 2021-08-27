@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <QFile>
+
 enum class CSVState {
     UnquotedField,
     QuotedField,
@@ -53,12 +55,12 @@ std::vector<std::string> readCSVRow(const std::string &row) {
 }
 
 /// Read CSV file, Excel dialect. Accept "quoted fields ""with quotes"""
-std::vector<std::vector<std::string>> readCSV(std::istream &in) {
+std::vector<std::vector<std::string>> readCSV(QFile &file) {
     std::vector<std::vector<std::string>> table;
     std::string row;
-    while (!in.eof()) {
-        std::getline(in, row);
-        if (in.bad() || in.fail()) {
+    while (!file.atEnd()) {
+        row = std::string(file.readLine());
+        if (file.error() != QFileDevice::NoError) {
             break;
         }
         auto fields = readCSVRow(row);

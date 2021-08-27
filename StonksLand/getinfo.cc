@@ -2,7 +2,6 @@
 #include "csv.h"
 
 #include <algorithm>
-#include <fstream>
 #include <stdexcept>
 
 #include <QDebug>
@@ -13,7 +12,8 @@ GetInfo::GetInfo(std::vector<Country> countries, std::vector<Currency> currencie
 }
 
 GetInfo::GetInfo(QString filename): countries(), currencies() {
-  std::ifstream file(filename.toStdString());
+  QFile file(filename);
+  file.open(QFile::OpenModeFlag::ReadOnly);
   std::vector<std::vector<std::string>> table = readCSV(file);
 
   for (std::vector<std::string> line : table) {

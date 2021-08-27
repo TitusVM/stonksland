@@ -11,7 +11,7 @@ MapRender::MapRender(QWidget *parent):
   page()->setWebChannel(channel);
   channel->registerObject(QString("qtMap"), this);
 
-  this->load(QUrl("C:/Users/luan.coroli/Desktop/map/index.html"));
+  this->load(QUrl("qrc:/data/map/index.html"));
 }
 
 void MapRender::countryClickedJs(QString country) {

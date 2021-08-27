@@ -4,4 +4,6 @@
 #include <string>
 #include <vector>
 
-std::vector<std::vector<std::string>> readCSV(std::istream &in);
+#include <QFile>
+
+std::vector<std::vector<std::string>> readCSV(QFile &file);

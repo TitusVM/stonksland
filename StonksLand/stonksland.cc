@@ -10,7 +10,7 @@
 StonksLand::StonksLand(QWidget *parent)
   : QWidget(parent)
 {
-  infos = new GetInfo("C:/Users/luan.coroli/Downloads/csv_combined.csv");
+  infos = new GetInfo("://data/csv_combined.csv");
 
   Map *map = new Map;
   infosMonnaie *infoBox = new infosMonnaie;

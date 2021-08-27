@@ -50,7 +50,7 @@ void infosMonnaie::setInfos(QString country, QString currency, QString symbol, Q
   this->currency->setText(currency);
   this->symbol->setText(symbol);
   this->ISO->setText(iso);
-  QPixmap countryFlag("C:/Users/luan.coroli/Desktop/flags/" + country.replace(' ', '_') + ".png");
+  QPixmap countryFlag("://data/flags/" + country.replace(' ', '_') + ".png");
   countryFlagLabel->setPixmap(countryFlag);
 }
 
