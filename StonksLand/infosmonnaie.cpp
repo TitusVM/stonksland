@@ -35,7 +35,7 @@ infosMonnaie::infosMonnaie(QWidget *parent)
     grid->addWidget(currencyLabel,1,0,1,2);
     grid->addWidget(symbolLabel,2,0,1,2);
     grid->addWidget(ISOLabel,3,0,1,2);
-    grid->addWidget(countryFlagLabel,0,0,1,1);
+    grid->addWidget(countryFlagLabel,0,0,1,1, Qt::AlignmentFlag::AlignRight);
     grid->addWidget(country,0,1,1,2);
     grid->addWidget(currency,1,1,1,2);
     grid->addWidget(symbol,2,1,1,2);
