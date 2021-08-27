@@ -18,11 +18,9 @@ infosMonnaie::infosMonnaie(QWidget *parent)
     QLabel *ISOLabel = new QLabel;
     ISOLabel->setText("ISO Code");
 
-    //QPixmap countryFlag(":/truc/machin/oui.png");
-    QLabel *countryFlagLabel = new QLabel;
+    countryFlagLabel = new QLabel;
     countryFlagLabel->setText("");
     countryFlagLabel->setStyleSheet("margin-left:140px;");
-    //countryFlagLabel->setPixmap(countryFlag);
 
     //QPixmap currencyPicture(":/truc/machin/non.png");
     QLabel *currencyPictureLabel = new QLabel;
@@ -52,6 +50,8 @@ void infosMonnaie::setInfos(QString country, QString currency, QString symbol, Q
   this->currency->setText(currency);
   this->symbol->setText(symbol);
   this->ISO->setText(iso);
+  QPixmap countryFlag("C:/Users/luan.coroli/Desktop/flags/" + country.replace(' ', '_') + ".png");
+  countryFlagLabel->setPixmap(countryFlag);
 }
 
 infosMonnaie::~infosMonnaie()

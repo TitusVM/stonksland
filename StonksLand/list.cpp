@@ -35,7 +35,7 @@ List::List(QWidget *parent)
 
 
     /* Declare file to use */
-    std::ifstream ifsFile ("csv_combined.csv", std::ifstream::in);
+    std::ifstream ifsFile ("C:/Users/luan.coroli/Downloads/csv_combined.csv", std::ifstream::in);
 
     /* Read file contents */
     vecFile = new std::vector<std::vector<std::string>>;

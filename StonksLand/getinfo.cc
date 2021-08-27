@@ -12,11 +12,8 @@ GetInfo::GetInfo(std::vector<Country> countries, std::vector<Currency> currencie
 {
 }
 
-GetInfo::GetInfo(QString filename) {
-  std::ifstream file;
-  //file.exceptions(std::ios::failbit | std::ios::badbit);
-  //file.open(filename.toStdString());
-  file.open("csv_combined.csv", std::ios::in);
+GetInfo::GetInfo(QString filename): countries(), currencies() {
+  std::ifstream file(filename.toStdString());
   std::vector<std::vector<std::string>> table = readCSV(file);
 
   for (std::vector<std::string> line : table) {
@@ -24,6 +21,11 @@ GetInfo::GetInfo(QString filename) {
     QString currencyName = QString::fromStdString(line[1]);
     QString currencySymbol = QString::fromStdString(line[2]);
     QString currencyISO = QString::fromStdString(line[3]);
+
+    if (countryName == "Republic of Congo") {
+      qDebug("");
+    }
+
 
     Currency currency(currencyName, currencySymbol, currencyISO);
     auto it = std::find_if(currencies.begin(), currencies.end(),
@@ -71,6 +73,16 @@ Currency GetInfo::findCurrency(Country country) {
   [&country](auto& currency) { return currency == country.getCurrency(); });
   if (it == currencies.end()) {
     throw std::runtime_error(std::string("Country \"") + country.getName().toStdString() + "\" has no currency.");
+  }
+
+  return *it;
+}
+
+Currency GetInfo::findCurrency(QString name) {
+  auto it = std::find_if(currencies.begin(), currencies.end(),
+  [&name](auto& currency) { return currency.getName() == name; });
+  if (it == currencies.end()) {
+    throw std::runtime_error(std::string("Currency \"") + name.toStdString() + "\" could not be found.");
   }
 
   return *it;

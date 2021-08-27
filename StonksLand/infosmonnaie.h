@@ -22,5 +22,6 @@ private:
     QLineEdit *currency;
     QLineEdit *symbol;
     QLineEdit *ISO;
+    QLabel *countryFlagLabel;
 };
 #endif // INFOSMONNAIE_H
