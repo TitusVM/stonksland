@@ -1,4 +1,5 @@
 #include "infosmonnaie.h"
+#include "currencyexchanger.h"
 
 infosMonnaie::infosMonnaie(QWidget *parent)
     : QWidget(parent)
@@ -25,10 +26,10 @@ infosMonnaie::infosMonnaie(QWidget *parent)
 
     //QPixmap currencyPicture(":/truc/machin/non.png");
     exchRate->resize(150,100);
-    exchRate->setStyleSheet("border-style: dashed;border-width: 2px;border-color: black;");
 
 
     QGridLayout *grid = new QGridLayout;
+    CurrencyExchanger *currExch = new CurrencyExchanger;
     grid->addWidget(countryLabel,0,0,1,4);
     grid->addWidget(currencyLabel,1,0,1,2);
     grid->addWidget(symbolLabel,2,0,1,2);
@@ -38,7 +39,8 @@ infosMonnaie::infosMonnaie(QWidget *parent)
     grid->addWidget(currency,1,1,1,2);
     grid->addWidget(symbol,2,1,1,2);
     grid->addWidget(ISO,3,1,1,2);
-    grid->addWidget(exchRate,0,3,4,3);
+    grid->addWidget(exchRate,0,3,4,1);
+    grid->addWidget(currExch, 0,5,4,2);
 
     setLayout(grid);
 }

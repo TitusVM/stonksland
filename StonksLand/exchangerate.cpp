@@ -18,6 +18,8 @@ ExchangeRate::ExchangeRate(QWidget *parent)
     exchangeRate = new QLabel;
     title = new QLabel;
     title->setText("Exchange rate from AFN to EUR");
+    QFont f( "Arial", 10, QFont::Bold);
+    title->setFont(f);
     json_list = new QJsonValue;
 
     QNetworkAccessManager *nam = new QNetworkAccessManager;
@@ -59,13 +61,20 @@ void ExchangeRate::updateRate(QString iso)
             QJsonValue value = json_list->toObject().value(iso);
             double valueDouble = ceil(value.toDouble() * 100.0) / 100.0;
             QString strValue = QString::number(valueDouble);
-            this->exchangeRate->setText("1 EUR = " + strValue + " " + iso);
+            this->exchangeRate->setText("  1 EUR = " + strValue + " " + iso);
             title->setText("Exchange rate from " + iso + " to EUR");
             /* For DEBUG purposes */
             //qDebug() << "Key = " << currencySymbol << ", Value = " << strValue;
         }
     }
-
+    exchangeRate->setStyleSheet(
+                                "boarder-style: solid;"
+                                "color: white;"
+                                "background: grey;"
+                                );
+    QFont f2("Arial", 15, QFont::Bold);
+    exchangeRate->setAlignment(Qt::AlignmentFlag::AlignVCenter);
+    exchangeRate->setFont(f2);
     layout->addWidget(title, 0,0);
     layout->addWidget(exchangeRate, 1,0);
     setLayout(layout);

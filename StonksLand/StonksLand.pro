@@ -12,6 +12,7 @@ SOURCES += \
     country.cc \
     csv.cc \
     currency.cc \
+    currencyexchanger.cpp \
     exchangerate.cpp \
     getinfo.cc \
     infosmonnaie.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     country.h \
     csv.h \
     currency.h \
+    currencyexchanger.h \
     exchangerate.h \
     getinfo.h \
     infosmonnaie.h \
