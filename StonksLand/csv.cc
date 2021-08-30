@@ -51,6 +51,12 @@ std::vector<std::string> readCSVRow(const std::string &row) {
                 break;
         }
     }
+    if (fields.size() > 0) {
+      QString last = QString::fromStdString(fields.back());
+      last = last.remove('\n').remove('\r');
+      fields.pop_back();
+      fields.push_back(last.toStdString());
+    }
     return fields;
 }
 

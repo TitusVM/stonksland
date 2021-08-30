@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webenginewidgets webchannel
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webenginewidgets webchannel charts
 
 CONFIG += c++11
 
@@ -9,12 +9,15 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    api.cc \
+    cache.cc \
     country.cc \
     csv.cc \
     currency.cc \
     currencyexchanger.cpp \
     exchangerate.cpp \
     getinfo.cc \
+    graph.cc \
     infosmonnaie.cpp \
     list.cpp \
     main.cc \
@@ -23,12 +26,15 @@ SOURCES += \
     stonksland.cc
 
 HEADERS += \
+    api.h \
+    cache.h \
     country.h \
     csv.h \
     currency.h \
     currencyexchanger.h \
     exchangerate.h \
     getinfo.h \
+    graph.h \
     infosmonnaie.h \
     list.h \
     map.h \

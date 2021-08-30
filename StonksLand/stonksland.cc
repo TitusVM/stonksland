@@ -14,23 +14,20 @@ StonksLand::StonksLand(QWidget *parent)
 
   Map *map = new Map;
   infosMonnaie *infoBox = new infosMonnaie;
-  QSizePolicy sp = infoBox->sizePolicy();
-  sp.setVerticalPolicy(QSizePolicy::Maximum);
-  infoBox->setSizePolicy(sp);
   List *list = new List;
-  sp = list->sizePolicy();
+  QSizePolicy sp = list->sizePolicy();
   sp.setHorizontalPolicy(QSizePolicy::Maximum);
   list->setSizePolicy(sp);
 
-  QVBoxLayout *vlayout = new QVBoxLayout;
-  vlayout->addWidget(map);
-  vlayout->addWidget(infoBox);
-
   QHBoxLayout *hlayout = new QHBoxLayout;
   hlayout->addWidget(list);
-  hlayout->addLayout(vlayout);
+  hlayout->addWidget(map);
 
-  setLayout(hlayout);
+  QVBoxLayout *vlayout = new QVBoxLayout;
+  vlayout->addLayout(hlayout);
+  vlayout->addWidget(infoBox);
+
+  setLayout(vlayout);
 
 
   connect(map, &Map::countryClicked, [=](QString countryName) {

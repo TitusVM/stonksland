@@ -7,7 +7,10 @@
 #include <QLineEdit>
 #include <QPixmap>
 
+#include "api.h"
+#include "cache.h"
 #include "exchangerate.h"
+#include "graph.h"
 
 class infosMonnaie : public QWidget
 {
@@ -26,5 +29,9 @@ private:
     QLineEdit *ISO;
     QLabel *countryFlagLabel;
     ExchangeRate *exchRate;
+    Graph *graph;
+    Cache cacheCurrent;
+    Cache cacheHistorical;
+    Api api;
 };
 #endif // INFOSMONNAIE_H
