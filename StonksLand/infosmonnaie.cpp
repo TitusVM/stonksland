@@ -37,6 +37,12 @@ infosMonnaie::infosMonnaie(QWidget *parent): QWidget(parent),
     QLabel *ISOLabel = new QLabel;
     ISOLabel->setText("ISO Code");
 
+    QLabel *copyright = new QLabel;
+    QFont f( "Arial", 8, true);
+    copyright->setFont(f);
+    copyright->setStyleSheet("color:grey;");
+    copyright->setText("  Quotes by exchangeratesapi.io");
+
     countryFlagLabel = new QLabel;
     countryFlagLabel->setText("");
     countryFlagLabel->setStyleSheet("margin-left:140px;");
@@ -61,6 +67,7 @@ infosMonnaie::infosMonnaie(QWidget *parent): QWidget(parent),
     grid->addWidget(exchRate, 0, 3, 4, 1);
     grid->addWidget(currExch, 0, 4, 4, 1);
     grid->addWidget(graph, 0, 5, 5, 1);
+    grid->addWidget(copyright, 4,3, 1, 3);
 
 
     setLayout(grid);
