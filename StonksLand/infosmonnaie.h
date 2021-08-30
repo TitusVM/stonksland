@@ -7,6 +7,8 @@
 #include <QLineEdit>
 #include <QPixmap>
 
+#include "exchangerate.h"
+
 class infosMonnaie : public QWidget
 {
     Q_OBJECT
@@ -23,5 +25,6 @@ private:
     QLineEdit *symbol;
     QLineEdit *ISO;
     QLabel *countryFlagLabel;
+    ExchangeRate *exchRate;
 };
 #endif // INFOSMONNAIE_H

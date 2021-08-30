@@ -8,6 +8,7 @@ infosMonnaie::infosMonnaie(QWidget *parent)
     currency = new QLineEdit;
     symbol = new QLineEdit;
     ISO = new QLineEdit;
+    exchRate = new ExchangeRate;
 
     QLabel *countryLabel = new QLabel;
     countryLabel->setText("Country");
@@ -23,11 +24,8 @@ infosMonnaie::infosMonnaie(QWidget *parent)
     countryFlagLabel->setStyleSheet("margin-left:140px;");
 
     //QPixmap currencyPicture(":/truc/machin/non.png");
-    QLabel *currencyPictureLabel = new QLabel;
-    currencyPictureLabel->setText("");
-    currencyPictureLabel->resize(150,100);
-    currencyPictureLabel->setStyleSheet("border-style: dashed;border-width: 2px;border-color: black;");
-    //currencyPictureLabel->setPixmap(currencyPicture);
+    exchRate->resize(150,100);
+    exchRate->setStyleSheet("border-style: dashed;border-width: 2px;border-color: black;");
 
 
     QGridLayout *grid = new QGridLayout;
@@ -40,18 +38,20 @@ infosMonnaie::infosMonnaie(QWidget *parent)
     grid->addWidget(currency,1,1,1,2);
     grid->addWidget(symbol,2,1,1,2);
     grid->addWidget(ISO,3,1,1,2);
-    grid->addWidget(currencyPictureLabel,0,3,4,3);
+    grid->addWidget(exchRate,0,3,4,3);
 
     setLayout(grid);
 }
 
 void infosMonnaie::setInfos(QString country, QString currency, QString symbol, QString iso) {
-  this->country->setText(country);
-  this->currency->setText(currency);
-  this->symbol->setText(symbol);
-  this->ISO->setText(iso);
-  QPixmap countryFlag("://data/flags/" + country.replace(' ', '_') + ".png");
-  countryFlagLabel->setPixmap(countryFlag);
+    this->country->setText(country);
+    this->currency->setText(currency);
+    this->symbol->setText(symbol);
+    this->ISO->setText(iso);
+    this->exchRate->updateRate(iso);
+
+    QPixmap countryFlag("://data/flags/" + country.replace(' ', '_') + ".png");
+    countryFlagLabel->setPixmap(countryFlag);
 }
 
 infosMonnaie::~infosMonnaie()
