@@ -124,7 +124,7 @@ void infosMonnaie::showMarkets()
     QHBoxLayout *stockHBoxTop = new QHBoxLayout;
     QHBoxLayout *stockHBoxBot = new QHBoxLayout;
     QVBoxLayout *stockVBox = new QVBoxLayout;
-    stockWindow = new QWidget();
+    stockWindow = new QWidget(this, Qt::Window);
     StockMarket *stockDAX = new StockMarket(stockWindow, "DAX");
     StockMarket *stockNASDAQ = new StockMarket(stockWindow, "NDAQ");
     StockMarket *stockSMIC = new StockMarket(stockWindow, "0981.XHKG");
