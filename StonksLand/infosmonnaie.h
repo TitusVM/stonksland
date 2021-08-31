@@ -1,6 +1,8 @@
 #ifndef INFOSMONNAIE_H
 #define INFOSMONNAIE_H
 
+#include <vector>
+
 #include <QWidget>
 #include <QGridLayout>
 #include <QLabel>
@@ -9,6 +11,7 @@
 
 #include "api.h"
 #include "cache.h"
+#include "currency.h"
 #include "exchangerate.h"
 #include "graph.h"
 
@@ -17,7 +20,7 @@ class infosMonnaie : public QWidget
     Q_OBJECT
 
 public:
-    infosMonnaie(QWidget *parent = nullptr);
+    infosMonnaie(std::vector<Currency> const& currencies);
     ~infosMonnaie();
 
     void setInfos(QString country, QString currency, QString symbol, QString iso);

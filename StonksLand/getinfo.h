@@ -8,7 +8,6 @@
 class GetInfo
 {
 public:
-  GetInfo(std::vector<Country> countries, std::vector<Currency> currencies);
   GetInfo(QString filename);
 
   std::vector<Country> findCountries(Currency currency);

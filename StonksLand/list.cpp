@@ -33,7 +33,7 @@ List::List(std::vector<Currency> currencies)
     font.setPointSize(10);
 
     /* Add to list */
-    for(std::size_t i = 1; i < currencies.size(); i++)
+    for(std::size_t i = 0; i < currencies.size(); i++)
     {
         QListWidgetItem *listItem = new QListWidgetItem;
         listItem->setText(currencies[i].getName());

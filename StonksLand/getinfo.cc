@@ -5,17 +5,19 @@
 
 #include "csv.h"
 
-GetInfo::GetInfo(std::vector<Country> countries, std::vector<Currency> currencies):
-    countries(countries), currencies(currencies)
-{
-}
-
 GetInfo::GetInfo(QString filename): countries(), currencies() {
   QFile file(filename);
   file.open(QFile::OpenModeFlag::ReadOnly);
   std::vector<std::vector<std::string>> table = readCSV(file);
 
+  bool firstLine = true;
   for (std::vector<std::string> line : table) {
+    /* skip headers */
+    if (firstLine) {
+      firstLine = false;
+      continue;
+    }
+
     QString countryName = QString::fromStdString(line[0]);
     QString currencyName = QString::fromStdString(line[1]);
     QString currencySymbol = QString::fromStdString(line[2]);

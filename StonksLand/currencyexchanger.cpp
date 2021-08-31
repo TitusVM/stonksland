@@ -1,10 +1,5 @@
 #include "currencyexchanger.h"
 
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
 #include <QLineEdit>
 #include <cmath>
 
@@ -14,8 +9,8 @@
 #include <QUrl>
 #include <QLayout>
 
-CurrencyExchanger::CurrencyExchanger(QWidget *parent)
-    : QWidget(parent)
+CurrencyExchanger::CurrencyExchanger(QMap<QString, double> const& rates, std::vector<Currency> const& currencies)
+    : QWidget(), rates(rates)
 {
     QHBoxLayout *hLayoutTop = new QHBoxLayout;
     QHBoxLayout *hLayoutBot = new QHBoxLayout;
@@ -47,35 +42,14 @@ CurrencyExchanger::CurrencyExchanger(QWidget *parent)
                              );
     resultConv->setText("0,0");
 
-    QNetworkAccessManager *nam = new QNetworkAccessManager;
-    QNetworkRequest *request = new QNetworkRequest;
-    json_list = new QJsonValue;
-
-
-    /* Currency base change only in API premium plan */
-    request->setUrl(QUrl("http://api.exchangeratesapi.io/v1/latest?access_key=d5bbf30a2178fbd92e5af9ae731531fc"));
-    QNetworkReply *reply = nam->post(*request, "");
-
-    /* EventLoop until reply comes in */
-    QEventLoop loop;
-    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    loop.exec();
-
-    /* Response json readAll */
-    QByteArray response_data = reply->readAll();
-    QJsonDocument *json_response_data = new QJsonDocument;
-    *json_response_data = QJsonDocument::fromJson(response_data);
-    reply->deleteLater();
-
-    /* Turn into object and then into value list (ignore headers) */
-    QJsonObject json_object = json_response_data->object();
-    *json_list = json_object.value("rates");
-
-    foreach(const QString& key, json_list->toObject().keys())
+    for (Currency const& curr : currencies)
     {
-        comboListA->addItem(key);
-        comboListB->addItem(key);
+        comboListA->addItem(curr.getISO());
+        comboListB->addItem(curr.getISO());
     }
+
+    comboListA->model()->sort(0);
+    comboListB->model()->sort(0);
 
     connect(comboListA, SIGNAL(currentIndexChanged(int)), this, SLOT(convert(int)));
     connect(comboListB, SIGNAL(currentIndexChanged(int)), this, SLOT(convert(int)));
@@ -92,12 +66,12 @@ CurrencyExchanger::CurrencyExchanger(QWidget *parent)
     setLayout(vLayout);
 }
 
-void CurrencyExchanger::convert(int index)
+void CurrencyExchanger::convert(int)
 {
     compute(comboListA->currentText(),comboListB->currentText());
 }
 
-void CurrencyExchanger::convert(QString string)
+void CurrencyExchanger::convert(QString)
 {
     compute(comboListA->currentText(),comboListB->currentText());
 }
@@ -106,22 +80,13 @@ void CurrencyExchanger::convert(QString string)
 void CurrencyExchanger::compute(QString currencyA, QString currencyB)
 {
     /* Conversion from currency1 to currency2 through EUR */
-    QJsonValue currencyEurtoB;
-    QJsonValue currencyEurtoA;
+    double currencyEurtoB = rates[currencyB];
+    double currencyEurtoA = rates[currencyA];
 
     double valueToExchange = valueConv->text().toDouble();
 
-    foreach(const QString& key, json_list->toObject().keys())
-    {
-        if(key == currencyA) currencyEurtoA = json_list->toObject().value(currencyA);
-        if(key == currencyB) currencyEurtoB = json_list->toObject().value(currencyB);
-    }
-
-    double doubCurrencyEurtoA = currencyEurtoA.toDouble();
-    double doubCurrencyEurtoB = currencyEurtoB.toDouble();
-
-    double eurValueCurrA = valueToExchange/doubCurrencyEurtoA;
-    double eurValueCurrB = eurValueCurrA*doubCurrencyEurtoB;
+    double eurValueCurrA = valueToExchange/currencyEurtoA;
+    double eurValueCurrB = eurValueCurrA*currencyEurtoB;
     double valueDouble = ceil(eurValueCurrB * 100.0) / 100.0;
 
     resultConv->setText(QString::number(valueDouble) + " " + currencyB);

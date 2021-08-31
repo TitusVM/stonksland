@@ -1,7 +1,7 @@
 #include "infosmonnaie.h"
 #include "currencyexchanger.h"
 
-infosMonnaie::infosMonnaie(QWidget *parent): QWidget(parent),
+infosMonnaie::infosMonnaie(std::vector<Currency> const& currencies): QWidget(),
   cacheCurrent("cache/current"), cacheHistorical("cache/historical", INT_MAX), api("d5bbf30a2178fbd92e5af9ae731531fc")
 {
     if (!cacheCurrent.contains("current")) {
@@ -20,12 +20,14 @@ infosMonnaie::infosMonnaie(QWidget *parent): QWidget(parent),
         }
     }
 
+    QMap<QString, double> currentRates = Api::extractRates(cacheCurrent.get("current"));
+
     this->resize(1000,200);
     country = new QLineEdit;
     currency = new QLineEdit;
     symbol = new QLineEdit;
     ISO = new QLineEdit;
-    exchRate = new ExchangeRate(Api::extractRates(cacheCurrent.get("current")));
+    exchRate = new ExchangeRate(currentRates);
     graph = new Graph;
 
     QLabel *countryLabel = new QLabel;
@@ -53,7 +55,7 @@ infosMonnaie::infosMonnaie(QWidget *parent): QWidget(parent),
 
     QGridLayout *grid = new QGridLayout;
 
-    CurrencyExchanger *currExch = new CurrencyExchanger;
+    CurrencyExchanger *currExch = new CurrencyExchanger(currentRates, currencies);
 
     grid->addWidget(countryLabel, 0, 0, 1, 1);
     grid->addWidget(currencyLabel, 1, 0, 1, 2);

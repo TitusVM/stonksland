@@ -16,12 +16,13 @@ StonksLand::StonksLand(QWidget *parent)
   : QWidget(parent)
 {
   infos = new GetInfo("://data/csv_combined.csv");
+  std::vector<Currency> currencies = infos->getCurrencyList();
 
   Map *map = new Map;
 
-  infosMonnaie *infoBox = new infosMonnaie;
+  infosMonnaie *infoBox = new infosMonnaie(currencies);
 
-  List *list = new List(infos->getCurrencyList());
+  List *list = new List(currencies);
   QSizePolicy sp = list->sizePolicy();
   sp.setHorizontalPolicy(QSizePolicy::Maximum);
   list->setSizePolicy(sp);
