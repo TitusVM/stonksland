@@ -24,9 +24,13 @@ infosMonnaie::infosMonnaie(std::vector<Currency> const& currencies): QWidget(),
 
     this->resize(1000,200);
     country = new QLineEdit;
+    country->setReadOnly(true);
     currency = new QLineEdit;
+    currency->setReadOnly(true);
     symbol = new QLineEdit;
+    symbol->setReadOnly(true);
     ISO = new QLineEdit;
+    ISO->setReadOnly(true);
     exchRate = new ExchangeRate(currentRates);
     graph = new Graph;
 
