@@ -2,16 +2,9 @@
 #define GRAPH_WIDGET_H
 
 #include <QWidget>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-
 #include <QLabel>
 #include <QLayout>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class exchangeRate; }
-QT_END_NAMESPACE
+#include <QMap>
 
 class ExchangeRate : public QWidget
 {
@@ -19,15 +12,14 @@ class ExchangeRate : public QWidget
 
 public:
     void updateRate(QString);
-    ExchangeRate(QWidget *parent = nullptr);
+    ExchangeRate(QMap<QString, double> const& rates);
     ~ExchangeRate();
 
 private:
-    QJsonValue *json_list;
     QGridLayout *layout;
     QLabel *exchangeRate;
     QLabel *title;
-
+    QMap<QString, double> rates;
 };
 
 #endif // GRAPH_WIDGET_H

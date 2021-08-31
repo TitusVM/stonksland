@@ -25,7 +25,7 @@ infosMonnaie::infosMonnaie(QWidget *parent): QWidget(parent),
     currency = new QLineEdit;
     symbol = new QLineEdit;
     ISO = new QLineEdit;
-    exchRate = new ExchangeRate;
+    exchRate = new ExchangeRate(Api::extractRates(cacheCurrent.get("current")));
     graph = new Graph;
 
     QLabel *countryLabel = new QLabel;
