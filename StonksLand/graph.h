@@ -13,6 +13,6 @@ public:
   Graph();
   ~Graph();
 
-  void display(QString currency, QLineSeries* rates);
+  void display(QString currencyIndex, QLineSeries* rates, QString dateFormat, bool isMainWindow);
 };
 

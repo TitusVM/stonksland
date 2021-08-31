@@ -221,5 +221,6 @@
         <file>data/flags/Zimbabwe.png</file>
         <file>data/map/index.html</file>
         <file>data/map/script.js</file>
+        <file>data/icons/stock.png</file>
     </qresource>
 </RCC>

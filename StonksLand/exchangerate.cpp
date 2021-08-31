@@ -36,7 +36,7 @@ void ExchangeRate::updateRate(QString iso)
         }
     }
     exchangeRate->setStyleSheet(
-                                "boarder-style: solid;"
+                                "border-style: solid;"
                                 "color: white;"
                                 "background: grey;"
                                 );

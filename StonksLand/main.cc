@@ -3,6 +3,7 @@
 #include <QApplication>
 
 #include "getinfo.h"
+#include "stockmarket.h"
 
 int main(int argc, char *argv[])
 {

@@ -1,5 +1,9 @@
+#include <QCoreApplication>
+#include <QEventLoop>
+
 #include "infosmonnaie.h"
 #include "currencyexchanger.h"
+#include "stockmarket.h"
 
 infosMonnaie::infosMonnaie(std::vector<Currency> const& currencies): QWidget(),
   cacheCurrent("cache/current"), cacheHistorical("cache/historical", INT_MAX), api("d5bbf30a2178fbd92e5af9ae731531fc")
@@ -53,8 +57,19 @@ infosMonnaie::infosMonnaie(std::vector<Currency> const& currencies): QWidget(),
     countryFlagLabel->setText("");
     countryFlagLabel->setStyleSheet("margin-left:140px;");
 
+    /* Display markets ://data/icon/stock.png */
+    showIndices = new QPushButton;
+    showIndices->setIcon(QIcon("://data/icons/stock.png"));
+    showIndices->setText("Display live markets");
+    showIndices->setStyleSheet("background: #009900; color: white; margin-left: 230px;");
+
+    connect(showIndices, SIGNAL(clicked()), this, SLOT(showMarkets()));
+
     //QPixmap currencyPicture(":/truc/machin/non.png");
     exchRate->resize(150,100);
+
+    QFont f2( "Arial", 18, true);
+    showIndices->setFont(f2);
 
 
     QGridLayout *grid = new QGridLayout;
@@ -73,7 +88,8 @@ infosMonnaie::infosMonnaie(std::vector<Currency> const& currencies): QWidget(),
     grid->addWidget(exchRate, 0, 3, 4, 1);
     grid->addWidget(currExch, 0, 4, 4, 1);
     grid->addWidget(graph, 0, 5, 5, 1);
-    grid->addWidget(copyright, 4,3, 1, 3);
+    grid->addWidget(copyright, 4, 3, 1, 3);
+    grid->addWidget(showIndices, 4, 4, 1, 1);
 
 
     setLayout(grid);
@@ -95,18 +111,51 @@ void infosMonnaie::setInfos(QString country, QString currency, QString symbol, Q
     for (int i = 0; i < 20; ++i, date = date.addYears(-1)) {
         QString y = QString::number(date.year());
         QMap<QString, double> rates = Api::extractRates(cacheHistorical.get(y));
-
-        double currencyEurtoB = rates["USD"];
-        double currencyEurtoA = rates[iso];
-        double eurValueCurrA = 1.0 / currencyEurtoA;
-        double eurValueCurrB = eurValueCurrA * currencyEurtoB;
-        double result = ceil(eurValueCurrB * 100.0) / 100.0;
-        *series << QPointF(date.endOfDay().toMSecsSinceEpoch(), result);
+        *series << QPointF(date.endOfDay().toMSecsSinceEpoch(), rates[iso]);
     }
-    this->graph->display(currency, series);
+    this->graph->display(currency, series, "yyyy", true);
 
     QPixmap countryFlag("://data/flags/" + country.replace(' ', '_') + ".png");
     countryFlagLabel->setPixmap(countryFlag);
+}
+
+void infosMonnaie::showMarkets()
+{
+    QHBoxLayout *stockHBoxTop = new QHBoxLayout;
+    QHBoxLayout *stockHBoxBot = new QHBoxLayout;
+    QVBoxLayout *stockVBox = new QVBoxLayout;
+    stockWindow = new QWidget();
+    StockMarket *stockDAX = new StockMarket(stockWindow, "DAX");
+    StockMarket *stockNASDAQ = new StockMarket(stockWindow, "NDAQ");
+    StockMarket *stockSMIC = new StockMarket(stockWindow, "0981.XHKG");
+    StockMarket *stockGOOG = new StockMarket(stockWindow, "GOOGL");
+
+    QTime dieTime= QTime::currentTime().addSecs(1);
+    while (QTime::currentTime() < dieTime)
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
+
+    StockMarket *stockINTC = new StockMarket(stockWindow, "INTC");
+    StockMarket *stockMSFT = new StockMarket(stockWindow, "MSFT");
+    StockMarket *stockAAPL = new StockMarket(stockWindow, "AAPL");
+    StockMarket *stockNOK = new StockMarket(stockWindow, "NOK");
+
+    stockHBoxTop->addWidget(stockDAX);
+    stockHBoxTop->addWidget(stockNASDAQ);
+    stockHBoxTop->addWidget(stockSMIC);
+    stockHBoxTop->addWidget(stockGOOG);
+
+    stockHBoxBot->addWidget(stockINTC);
+    stockHBoxBot->addWidget(stockMSFT);
+    stockHBoxBot->addWidget(stockAAPL);
+    stockHBoxBot->addWidget(stockNOK);
+
+    stockVBox->addLayout(stockHBoxTop);
+    stockVBox->addLayout(stockHBoxBot);
+
+    stockWindow->setLayout(stockVBox);
+    stockWindow->show();
 }
 
 infosMonnaie::~infosMonnaie()

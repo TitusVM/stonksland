@@ -7,7 +7,7 @@ Graph::Graph()
 {
 }
 
-void Graph::display(QString currency, QLineSeries* rates) {  
+void Graph::display(QString currencyIndex, QLineSeries* rates, QString dateFormat, bool isMainWindow) {
   double highest = INT_MIN;
   double lower = INT_MAX;
   for (int i = 0; i < rates->count(); ++i) {
@@ -21,12 +21,6 @@ void Graph::display(QString currency, QLineSeries* rates) {
     }
   }
 
-  lower -= 0.3;
-  highest += 0.3;
-  if (lower < 0) {
-    lower = 0;
-  }
-
   QPen pen(0x059605);
   pen.setWidth(3);
   rates->setPen(pen);
@@ -38,30 +32,33 @@ void Graph::display(QString currency, QLineSeries* rates) {
   rates->setBrush(gradient);
 
   QChart *chart = new QChart;
-  chart->setDropShadowEnabled(true);
   chart->legend()->setVisible(false);
   chart->setContentsMargins(0, 0, 0, 0);
   chart->addSeries(rates);
-  chart->setTitle("Price of " + currency + " in USD");
+  if(isMainWindow)
+  {
+      chart->setTitle("Price of Euro in " + currencyIndex);
+  }
+  else
+  {
+      chart->setTitle(currencyIndex);
+  }
+
   chart->createDefaultAxes();
 
   chart->removeAxis(chart->axes(Qt::Horizontal).first());
 
   QDateTimeAxis *x = new QDateTimeAxis;
-  x->setTickCount(10);
-  x->setFormat("yyyy");
+  //x->setTickCount(10);
+  x->setFormat(dateFormat);
   chart->addAxis(x, Qt::AlignBottom);
   rates->attachAxis(x);
 
-  chart->axes(Qt::Vertical).first()->setRange(lower, highest);
+  chart->axes(Qt::Vertical).first()->setRange(lower, highest + 1);
 
   setChart(chart);
   setRenderHint(QPainter::Antialiasing);
   this->setMinimumHeight(200);
-  this->setMinimumWidth(400);
-
-  QPointF p = chart->mapToValue(QPointF(100, 200));
-  chart->setTitle(QString("") + p.x() + "a   " + p.y());
 }
 
 Graph::~Graph() {}

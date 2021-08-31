@@ -23,6 +23,7 @@ SOURCES += \
     main.cc \
     map.cc \
     maprender.cc \
+    stockmarket.cpp \
     stonksland.cc
 
 HEADERS += \
@@ -39,6 +40,7 @@ HEADERS += \
     list.h \
     map.h \
     maprender.h \
+    stockmarket.h \
     stonksland.h
 
 # Default rules for deployment.

@@ -7,10 +7,12 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QVBoxLayout>
+#include <QPushButton>
 
 #include "infosmonnaie.h"
 #include "list.h"
 #include "map.h"
+#include "stockmarket.h"
 
 StonksLand::StonksLand(QWidget *parent)
   : QWidget(parent)
