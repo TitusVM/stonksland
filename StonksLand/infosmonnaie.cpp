@@ -95,7 +95,13 @@ void infosMonnaie::setInfos(QString country, QString currency, QString symbol, Q
     for (int i = 0; i < 20; ++i, date = date.addYears(-1)) {
         QString y = QString::number(date.year());
         QMap<QString, double> rates = Api::extractRates(cacheHistorical.get(y));
-        *series << QPointF(date.endOfDay().toMSecsSinceEpoch(), rates[iso]);
+
+        double currencyEurtoB = rates["USD"];
+        double currencyEurtoA = rates[iso];
+        double eurValueCurrA = 1.0 / currencyEurtoA;
+        double eurValueCurrB = eurValueCurrA * currencyEurtoB;
+        double result = ceil(eurValueCurrB * 100.0) / 100.0;
+        *series << QPointF(date.endOfDay().toMSecsSinceEpoch(), result);
     }
     this->graph->display(currency, series);
 
