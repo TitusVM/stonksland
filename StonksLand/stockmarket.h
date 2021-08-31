@@ -4,13 +4,11 @@
 #include <QWidget>
 #include <QLabel>
 #include <QComboBox>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
 #include <QJsonDocument>
 #include <QListWidget>
+
+#include "cache.h"
 #include "graph.h"
-
-
 
 class StockMarket : public Graph
 {
@@ -22,14 +20,11 @@ public:
     void compute(QString, QString);
 
 protected slots:
-    void slotNetwManager(QNetworkReply*);
+    void slotNetwManager();
 
 private:
-
-    QJsonDocument *json_list;
-    QNetworkRequest *request;
-    QByteArray *reply_data;
-    QString *marketIndex;
+    Cache cache;
+    QString marketIndex;
 
 };
 #endif // CurrencyExchanger_H
