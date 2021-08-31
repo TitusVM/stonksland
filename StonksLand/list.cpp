@@ -1,10 +1,9 @@
 #include "list.h"
-#include "csv.h"
 #include "infosmonnaie.h"
 #include <QtWidgets>
 
-List::List(QWidget *parent)
-    : QListWidget(parent)
+List::List(std::vector<Currency> currencies)
+    : QListWidget()
 {
     // QListWidget *countryList = new QListWidget(this);
     this->setSortingEnabled(true);
@@ -33,33 +32,13 @@ List::List(QWidget *parent)
     QFont font("Monospace");
     font.setPointSize(10);
 
-
-    /* Declare file to use */
-    QFile ifsFile("://data/csv_combined.csv");
-    ifsFile.open(QFile::OpenModeFlag::ReadOnly);
-
-    /* Read file contents */
-    vecFile = new std::vector<std::vector<std::string>>;
-    *vecFile = readCSV(ifsFile);
-
     /* Add to list */
-    for(int i = 1; i < vecFile->size(); i++)
+    for(std::size_t i = 1; i < currencies.size(); i++)
     {
         QListWidgetItem *listItem = new QListWidgetItem;
-        std::string strItem((*vecFile)[i][1].begin(), (*vecFile)[i][1].end());
-        QString qstrItem = QString::fromUtf8(strItem.c_str());
-
-        /*QLabel *labelItem = new QLabel;
-        labelItem->setText(qstrItem);*/
-
-        listItem->setText(qstrItem);
+        listItem->setText(currencies[i].getName());
         listItem->setFont(font);
-
-
-        if(this->findItems(qstrItem, Qt::MatchExactly).isEmpty())
-        {
-            this->addItem(listItem);
-        }
+        addItem(listItem);
     }
 
     setMinimumWidth(410);
@@ -67,6 +46,5 @@ List::List(QWidget *parent)
 
 List::~List()
 {
-    delete vecFile;
 }
 

@@ -18,21 +18,13 @@ StonksLand::StonksLand(QWidget *parent)
   infos = new GetInfo("://data/csv_combined.csv");
 
   Map *map = new Map;
+
   infosMonnaie *infoBox = new infosMonnaie;
-  List *list = new List;
+
+  List *list = new List(infos->getCurrencyList());
   QSizePolicy sp = list->sizePolicy();
   sp.setHorizontalPolicy(QSizePolicy::Maximum);
   list->setSizePolicy(sp);
-
-  QHBoxLayout *hlayout = new QHBoxLayout;
-  hlayout->addWidget(list);
-  hlayout->addWidget(map);
-
-  QVBoxLayout *vlayout = new QVBoxLayout;
-  vlayout->addLayout(hlayout);
-  vlayout->addWidget(infoBox);
-
-  setLayout(vlayout);
 
   QMenu* fileMenu = new QMenu("File");
   fileMenu->addAction("Quit", qApp, &QApplication::quit, QKeySequence("Ctrl+Q"));
@@ -48,18 +40,17 @@ StonksLand::StonksLand(QWidget *parent)
   QMenuBar *bar = new QMenuBar;
   bar->addMenu(fileMenu);
   bar->addMenu(aboutMenu);
+
+  QHBoxLayout *hlayout = new QHBoxLayout;
+  hlayout->addWidget(list);
+  hlayout->addWidget(map);
+
+  QVBoxLayout *vlayout = new QVBoxLayout;
+  vlayout->addLayout(hlayout);
+  vlayout->addWidget(infoBox);
   vlayout->setMenuBar(bar);
 
-
-  connect(map, &Map::countryClicked, [=](QString countryName) {
-    Currency currency = infos->findCurrency(infos->findCountry(countryName));
-    infoBox->setInfos(countryName, currency.getName(), currency.getSymbol(), currency.getISO());
-    emit map->reset();
-    emit map->highlight(countryName);
-    QListWidgetItem* item = list->findItems(currency.getName(), Qt::MatchExactly)[0];
-    item->setSelected(true);
-    list->scrollToItem(item);
-  });
+  setLayout(vlayout);
 
   connect(list, &List::currentItemChanged, [=](QListWidgetItem *current) {
     Currency currency = infos->findCurrency(current->text());
@@ -75,10 +66,19 @@ StonksLand::StonksLand(QWidget *parent)
     strCountries = strCountries.left(strCountries.length() - 2);
     infoBox->setInfos(strCountries, currency.getName(), currency.getSymbol(), currency.getISO());
   });
+
+  connect(map, &Map::countryClicked, [=](QString countryName) {
+    Currency currency = infos->findCurrency(infos->findCountry(countryName));
+    infoBox->setInfos(countryName, currency.getName(), currency.getSymbol(), currency.getISO());
+    emit map->reset();
+    emit map->highlight(countryName);
+    QListWidgetItem* item = list->findItems(currency.getName(), Qt::MatchExactly)[0];
+    item->setSelected(true);
+    list->scrollToItem(item);
+  });
 }
 
 StonksLand::~StonksLand()
 {
   delete infos;
 }
-

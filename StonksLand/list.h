@@ -5,15 +5,14 @@
 #include <fstream>
 #include <vector>
 
+#include "currency.h"
+
 class List : public QListWidget
 {
     Q_OBJECT
 
 public:
-    List(QWidget *parent = nullptr);
+    List(std::vector<Currency> currencies);
     ~List();
-
-private:
-    std::vector<std::vector<std::string>> *vecFile;
 };
 #endif // LIST_H

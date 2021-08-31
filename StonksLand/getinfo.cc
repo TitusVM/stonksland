@@ -1,10 +1,9 @@
 #include "getinfo.h"
-#include "csv.h"
 
 #include <algorithm>
 #include <stdexcept>
 
-#include <QDebug>
+#include "csv.h"
 
 GetInfo::GetInfo(std::vector<Country> countries, std::vector<Currency> currencies):
     countries(countries), currencies(currencies)
@@ -21,11 +20,6 @@ GetInfo::GetInfo(QString filename): countries(), currencies() {
     QString currencyName = QString::fromStdString(line[1]);
     QString currencySymbol = QString::fromStdString(line[2]);
     QString currencyISO = QString::fromStdString(line[3]);
-
-    if (countryName == "Republic of Congo") {
-      qDebug("");
-    }
-
 
     Currency currency(currencyName, currencySymbol, currencyISO);
     auto it = std::find_if(currencies.begin(), currencies.end(),
@@ -70,7 +64,7 @@ Country GetInfo::findCountry(QString name) {
 
 Currency GetInfo::findCurrency(Country country) {
   auto it = std::find_if(currencies.begin(), currencies.end(),
-  [&country](auto& currency) { return currency == country.getCurrency(); });
+  [country](auto& currency) { return currency == country.getCurrency(); });
   if (it == currencies.end()) {
     throw std::runtime_error(std::string("Country \"") + country.getName().toStdString() + "\" has no currency.");
   }
@@ -87,3 +81,8 @@ Currency GetInfo::findCurrency(QString name) {
 
   return *it;
 }
+
+std::vector<Currency> GetInfo::getCurrencyList() const {
+  return currencies;
+}
+

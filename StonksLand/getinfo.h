@@ -16,6 +16,8 @@ public:
   Currency findCurrency(Country country);
   Currency findCurrency(QString name);
 
+  std::vector<Currency> getCurrencyList() const;
+
 protected:
   std::vector<Country> countries;
   std::vector<Currency> currencies;
