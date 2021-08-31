@@ -1,6 +1,11 @@
 #include "stonksland.h"
 
+#include <QApplication>
+#include <QDesktopServices>
 #include <QHBoxLayout>
+#include <QMenu>
+#include <QMenuBar>
+#include <QMessageBox>
 #include <QVBoxLayout>
 
 #include "infosmonnaie.h"
@@ -28,6 +33,22 @@ StonksLand::StonksLand(QWidget *parent)
   vlayout->addWidget(infoBox);
 
   setLayout(vlayout);
+
+  QMenu* fileMenu = new QMenu("File");
+  fileMenu->addAction("Quit", qApp, &QApplication::quit, QKeySequence("Ctrl+Q"));
+
+  QMenu* aboutMenu = new QMenu("About");
+  aboutMenu->addAction("About exchangeratesapi.io", []() {
+    QDesktopServices::openUrl(QUrl("https://exchangeratesapi.io/about/"));
+  });
+  aboutMenu->addAction("About Qt", [this]() {
+    QMessageBox::aboutQt(this);
+  });
+
+  QMenuBar *bar = new QMenuBar;
+  bar->addMenu(fileMenu);
+  bar->addMenu(aboutMenu);
+  vlayout->setMenuBar(bar);
 
 
   connect(map, &Map::countryClicked, [=](QString countryName) {
