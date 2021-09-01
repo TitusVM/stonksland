@@ -46,15 +46,14 @@ void Graph::display(QString currencyIndex, QLineSeries* rates, QString dateForma
 
   chart->createDefaultAxes();
 
-  chart->removeAxis(chart->axes(Qt::Horizontal).first());
+  chart->removeAxis(chart->axes(Qt::Horizontal).at(0));
 
   QDateTimeAxis *x = new QDateTimeAxis;
-  //x->setTickCount(10);
   x->setFormat(dateFormat);
   chart->addAxis(x, Qt::AlignBottom);
   rates->attachAxis(x);
 
-  chart->axes(Qt::Vertical).first()->setRange(lower, highest + 1);
+  chart->axes(Qt::Vertical).at(0)->setRange(lower, highest + 1);
 
   setChart(chart);
   setRenderHint(QPainter::Antialiasing);

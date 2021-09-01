@@ -33,10 +33,10 @@ StonksLand::StonksLand(QWidget *parent)
   fileMenu->addAction("Quit", qApp, &QApplication::quit, QKeySequence("Ctrl+Q"));
 
   QMenu* aboutMenu = new QMenu("About");
-  aboutMenu->addAction("About exchangeratesapi.io", []() {
+  aboutMenu->addAction("About exchangeratesapi.io", this, []() {
     QDesktopServices::openUrl(QUrl("https://exchangeratesapi.io/about/"));
   });
-  aboutMenu->addAction("About Qt", [this]() {
+  aboutMenu->addAction("About Qt", this, [this]() {
     QMessageBox::aboutQt(this);
   });
 
@@ -53,15 +53,15 @@ StonksLand::StonksLand(QWidget *parent)
   vlayout->addWidget(infoBox);
   vlayout->setMenuBar(bar);
 
-  connect(list, &List::currentItemChanged, [=](QListWidgetItem *current) {
+  connect(list, &List::currentItemChanged, this, [=](QListWidgetItem *current) {
     Currency currency = infos->findCurrency(current->text());
     std::vector<Country> countries = infos->findCountries(currency);
     QString strCountries = "";
 
-    emit map->reset();
-    for (Country country : countries) {
+    map->reset();
+    for (const Country &country : qAsConst(countries)) {
       strCountries += country.getName() + ", ";
-      emit map->highlight(country.getName());
+      map->highlight(country.getName());
     }
 
     strCountries = strCountries.left(strCountries.length() - 2);
@@ -71,9 +71,9 @@ StonksLand::StonksLand(QWidget *parent)
   connect(map, &Map::countryClicked, [=](QString countryName) {
     Currency currency = infos->findCountry(countryName).getCurrency();
     infoBox->setInfos(countryName, currency.getName(), currency.getSymbol(), currency.getISO());
-    emit map->reset();
-    emit map->highlight(countryName);
-    QListWidgetItem* item = list->findItems(currency.getName(), Qt::MatchExactly)[0];
+    map->reset();
+    map->highlight(countryName);
+    QListWidgetItem* item = list->findItems(currency.getName(), Qt::MatchExactly).at(0);
     item->setSelected(true);
     list->scrollToItem(item);
   });

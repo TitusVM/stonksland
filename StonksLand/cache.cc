@@ -15,7 +15,7 @@ Cache::Cache(QString directory, int validity): dir(directory), cache() {
   QStringList files = QDir(directory).entryList(QDir::Filter::Files);
   QDateTime now = QDateTime::currentDateTime();
 
-  for (QString file : files) {
+  for (const QString &file : qAsConst(files)) {
     QString path = QDir::cleanPath(directory + "/" + file);
     QDateTime date = QFileInfo(path).lastModified();
     if (date.addSecs(validity) > now) {

@@ -6,9 +6,6 @@
 #include <QEventLoop>
 #include <QMap>
 
-
-//#include <QDebug>
-
 ExchangeRate::ExchangeRate(QMap<QString, double> const& rates)
     : QWidget(), rates(rates)
 {
@@ -23,7 +20,8 @@ ExchangeRate::ExchangeRate(QMap<QString, double> const& rates)
 void ExchangeRate::updateRate(QString iso)
 {
     /* Iterate list and find currency rate with currency symbol */
-    for (QString const& key : rates.keys())
+    QList<QString> keys = rates.keys();
+    for (QString const& key : qAsConst(keys))
     {
         if(key == iso)
         {
@@ -31,8 +29,6 @@ void ExchangeRate::updateRate(QString iso)
             QString strValue = QString::number(valueDouble);
             this->exchangeRate->setText("  1 EUR = " + strValue + " " + iso);
             title->setText("Exchange rate from " + iso + " to EUR");
-            /* For DEBUG purposes */
-            //qDebug() << "Key = " << currencySymbol << ", Value = " << strValue;
         }
     }
     exchangeRate->setStyleSheet(
