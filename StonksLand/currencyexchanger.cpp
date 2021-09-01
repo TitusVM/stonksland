@@ -40,7 +40,7 @@ CurrencyExchanger::CurrencyExchanger(QMap<QString, double> const& rates, std::ve
                               "color: white;"
                               "background: grey;"
                              );
-    resultConv->setText("0,0");
+
 
     for (Currency const& curr : currencies)
     {
@@ -52,9 +52,11 @@ CurrencyExchanger::CurrencyExchanger(QMap<QString, double> const& rates, std::ve
     connect(comboListB, SIGNAL(currentIndexChanged(int)), this, SLOT(convert(int)));
 
     comboListA->model()->sort(0);
+    comboListA->setCurrentIndex(27);
+    valueUnit->setText("CHF");
     comboListB->model()->sort(0);
-    comboListA->setCurrentIndex(0);
-    comboListB->setCurrentIndex(0);
+    comboListB->setCurrentIndex(42);
+    resultConv->setText("0 EUR");
 
     hLayoutTop->addWidget(comboListA);
     hLayoutTop->addWidget(comboListB);

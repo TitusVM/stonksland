@@ -5,7 +5,6 @@
 List::List(std::vector<Currency> currencies)
     : QListWidget()
 {
-    // QListWidget *countryList = new QListWidget(this);
     this->setSortingEnabled(true);
     this->setSpacing(8);
     this->setStyleSheet({"QListWidget { "

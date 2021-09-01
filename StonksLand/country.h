@@ -9,7 +9,6 @@ class Country
 public:
   Country(QString name, Currency currency);
 
-public:
   QString getName() const;
   Currency getCurrency() const;
 

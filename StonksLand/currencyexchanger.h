@@ -17,6 +17,7 @@ class CurrencyExchanger : public QWidget
 public:
     CurrencyExchanger(QMap<QString, double> const& rates, std::vector<Currency> const& currencies);
     ~CurrencyExchanger();
+
     void compute(QString, QString);
 
 protected slots:

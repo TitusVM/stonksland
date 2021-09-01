@@ -11,9 +11,10 @@ class ExchangeRate : public QWidget
     Q_OBJECT
 
 public:
-    void updateRate(QString);
     ExchangeRate(QMap<QString, double> const& rates);
     ~ExchangeRate();
+
+    void updateRate(QString);
 
 private:
     QGridLayout *layout;

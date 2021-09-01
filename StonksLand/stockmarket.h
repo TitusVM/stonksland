@@ -17,6 +17,7 @@ class StockMarket : public Graph
 public:
     StockMarket(QWidget *parent = nullptr, QString marketIndex = "AAPL");
     ~StockMarket();
+
     void compute(QString, QString);
 
 protected slots:
