@@ -2,4 +2,5 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     api \
-    cache
+    cache \
+    csv
