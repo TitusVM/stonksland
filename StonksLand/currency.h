@@ -11,7 +11,7 @@ public:
   QString getSymbol() const;
   QString getISO() const;
 
-  bool operator==(Currency const& rhs);
+  bool operator==(Currency const& rhs) const;
 
 protected:
   QString name;

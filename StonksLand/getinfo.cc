@@ -64,16 +64,6 @@ Country GetInfo::findCountry(QString name) {
   return *it;
 }
 
-Currency GetInfo::findCurrency(Country country) {
-  auto it = std::find_if(currencies.begin(), currencies.end(),
-  [country](auto& currency) { return currency == country.getCurrency(); });
-  if (it == currencies.end()) {
-    throw std::runtime_error(std::string("Country \"") + country.getName().toStdString() + "\" has no currency.");
-  }
-
-  return *it;
-}
-
 Currency GetInfo::findCurrency(QString name) {
   auto it = std::find_if(currencies.begin(), currencies.end(),
   [&name](auto& currency) { return currency.getName() == name; });

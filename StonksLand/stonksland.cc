@@ -69,7 +69,7 @@ StonksLand::StonksLand(QWidget *parent)
   });
 
   connect(map, &Map::countryClicked, [=](QString countryName) {
-    Currency currency = infos->findCurrency(infos->findCountry(countryName));
+    Currency currency = infos->findCountry(countryName).getCurrency();
     infoBox->setInfos(countryName, currency.getName(), currency.getSymbol(), currency.getISO());
     emit map->reset();
     emit map->highlight(countryName);

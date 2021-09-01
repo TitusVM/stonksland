@@ -17,6 +17,6 @@ QString Currency::getISO() const {
   return iso;
 }
 
-bool Currency::operator==(Currency const& rhs) {
+bool Currency::operator==(Currency const& rhs) const {
   return iso == rhs.iso;
 }
