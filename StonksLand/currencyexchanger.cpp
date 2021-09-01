@@ -48,11 +48,13 @@ CurrencyExchanger::CurrencyExchanger(QMap<QString, double> const& rates, std::ve
         comboListB->addItem(curr.getISO());
     }
 
-    comboListA->model()->sort(0);
-    comboListB->model()->sort(0);
-
     connect(comboListA, SIGNAL(currentIndexChanged(int)), this, SLOT(convert(int)));
     connect(comboListB, SIGNAL(currentIndexChanged(int)), this, SLOT(convert(int)));
+
+    comboListA->model()->sort(0);
+    comboListB->model()->sort(0);
+    comboListA->setCurrentIndex(0);
+    comboListB->setCurrentIndex(0);
 
     hLayoutTop->addWidget(comboListA);
     hLayoutTop->addWidget(comboListB);
