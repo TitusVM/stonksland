@@ -20,6 +20,7 @@ void MapRender::countryClickedJs(QString country) {
 
 void MapRender::connectedJs() {
   emit resizeMapJs(width());
+  emit highlightJs("Afghanistan");
 }
 
 void MapRender::resizeEvent(QResizeEvent*) {
