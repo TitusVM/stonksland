@@ -65,7 +65,6 @@ infosMonnaie::infosMonnaie(std::vector<Currency> const& currencies): QWidget(),
 
     connect(showIndices, SIGNAL(clicked()), this, SLOT(showMarkets()));
 
-    //QPixmap currencyPicture(":/truc/machin/non.png");
     exchRate->resize(150,100);
 
     QFont f2( "Arial", 18, true);
@@ -123,12 +122,19 @@ void infosMonnaie::showMarkets()
 {
     QHBoxLayout *stockHBoxTop = new QHBoxLayout;
     QHBoxLayout *stockHBoxBot = new QHBoxLayout;
+    QHBoxLayout *stockHBoxCopyright = new QHBoxLayout;
     QVBoxLayout *stockVBox = new QVBoxLayout;
     stockWindow = new QWidget(this, Qt::Window);
     StockMarket *stockDAX = new StockMarket(stockWindow, "DAX");
     StockMarket *stockNASDAQ = new StockMarket(stockWindow, "NDAQ");
     StockMarket *stockSMIC = new StockMarket(stockWindow, "0981.XHKG");
     StockMarket *stockGOOG = new StockMarket(stockWindow, "GOOGL");
+
+    QLabel *copyright = new QLabel;
+    QFont f( "Arial", 8, true);
+    copyright->setFont(f);
+    copyright->setStyleSheet("color:grey;");
+    copyright->setText("  Quotes by api.marketstack.com");
 
     QTime dieTime= QTime::currentTime().addSecs(1);
     while (QTime::currentTime() < dieTime)
@@ -151,8 +157,11 @@ void infosMonnaie::showMarkets()
     stockHBoxBot->addWidget(stockAAPL);
     stockHBoxBot->addWidget(stockNOK);
 
+    stockHBoxCopyright->addWidget(copyright);
+
     stockVBox->addLayout(stockHBoxTop);
     stockVBox->addLayout(stockHBoxBot);
+    stockVBox->addLayout(stockHBoxCopyright);
 
     stockWindow->setLayout(stockVBox);
     stockWindow->show();
