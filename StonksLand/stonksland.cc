@@ -53,8 +53,6 @@ StonksLand::StonksLand(QWidget *parent)
   vlayout->addWidget(infoBox);
   vlayout->setMenuBar(bar);
 
-  setLayout(vlayout);
-
   connect(list, &List::currentItemChanged, [=](QListWidgetItem *current) {
     Currency currency = infos->findCurrency(current->text());
     std::vector<Country> countries = infos->findCountries(currency);
@@ -79,6 +77,10 @@ StonksLand::StonksLand(QWidget *parent)
     item->setSelected(true);
     list->scrollToItem(item);
   });
+
+    list->setCurrentRow(0);
+
+    setLayout(vlayout);
 }
 
 StonksLand::~StonksLand()
