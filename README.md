@@ -55,7 +55,7 @@ To view the graph of historical quotes to euros:
 * [marketstack.com](https://marketstack.com/terms)
 * [exchangerates.io](https://exchangeratesapi.io/terms/)
 
-This application and the usage of the APIs comply with the terms listed hereinabove. This application is not to be sold or used in a profitable way.
+This application and the usage of the APIs comply with the terms listed hereinabove.
 
 MIT License
 
