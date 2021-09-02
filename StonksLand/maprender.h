@@ -8,6 +8,7 @@ class MapRender : public QWebEngineView
 
 public:
   MapRender(QWidget *parent);
+  ~MapRender();
 
 public slots:
   void countryClickedJs(QString country);

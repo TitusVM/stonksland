@@ -14,6 +14,11 @@ MapRender::MapRender(QWidget *parent):
   this->load(QUrl("qrc:/data/map/index.html"));
 }
 
+MapRender::~MapRender() {
+  /* QWebEnginePage does not take ownership of the QWebChannel */
+  delete page()->webChannel();
+}
+
 void MapRender::countryClickedJs(QString country) {
   emit qobject_cast<Map*>(parentWidget())->countryClicked(country);
 }

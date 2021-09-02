@@ -26,6 +26,8 @@ There are two possibilities for installation:
 
 * The code can be cloned and compiled using [Qt Creator](https://www.qt.io/download)
 
+* The latest standalone executable can be found on the [Releases](https://gitlab-etu.ing.he-arc.ch/isc/2021-22/niveau-2/conception-logiciel-intro-donnees/g6/-/releases) page. The Qt5 dependencies are not included.
+
 **DISCLAIMER:** This app will not work with Qt6! For the compilation with Qt, using Qt5 is paramount. This is due to the removal and deprecation of several tools used in this app in Qt6.
 
 ## Usage

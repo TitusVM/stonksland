@@ -112,7 +112,7 @@ void infosMonnaie::setInfos(QString country, QString currency, QString symbol, Q
         QMap<QString, double> rates = Api::extractRates(cacheHistorical.get(y));
         *series << QPointF(date.endOfDay().toMSecsSinceEpoch(), rates[iso]);
     }
-    this->graph->display(currency, series, "yyyy", true);
+    this->graph->display(currency, series, "yyyy", true);  // takes ownership of series
 
     QPixmap countryFlag("://data/flags/" + country.replace(' ', '_') + ".png");
     countryFlagLabel->setPixmap(countryFlag);
@@ -127,6 +127,7 @@ void infosMonnaie::showMarkets()
     QHBoxLayout *stockHBoxCopyright = new QHBoxLayout;
     QVBoxLayout *stockVBox = new QVBoxLayout;
     stockWindow = new QWidget(this, Qt::Window);
+    stockWindow->setAttribute(Qt::WA_DeleteOnClose);
     StockMarket *stockDAX = new StockMarket("DAX", apiKey);
     StockMarket *stockNASDAQ = new StockMarket("NDAQ", apiKey);
     StockMarket *stockSMIC = new StockMarket("0981.XHKG", apiKey);
