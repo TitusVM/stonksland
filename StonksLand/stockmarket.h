@@ -15,7 +15,7 @@ class StockMarket : public Graph
     Q_OBJECT
 
 public:
-    StockMarket(QWidget *parent = nullptr, QString marketIndex = "AAPL");
+    StockMarket(QString marketIndex, QString key);
     ~StockMarket();
 
     void compute(QString, QString);

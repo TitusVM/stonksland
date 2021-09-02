@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QDesktopServices>
+#include <QDir>
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QMenuBar>
@@ -17,14 +18,25 @@
 StonksLand::StonksLand(QWidget *parent)
   : QWidget(parent)
 {
-  infos = new GetInfo("://data/csv_combined.csv");
-  std::vector<Currency> currencies = infos->getCurrencyList();
+  infos = new GetInfo("://data/csv_combined.csv", "keys.txt");
+  if (infos->getExchangeratesapiApiKey() == "" || infos->getMarketstackApiKey() == "") {
+    QString here = QDir().absolutePath();
+    QMessageBox::critical(
+          nullptr,  // no parent so the window is in the taskbar
+          "Missing api keys",
+          "The keys for the web apis couldn't be found.<br>"
+          "Please create a file called \"keys.txt\" in <a href=\"" + here + "\">the app's directory</a> and put the keys inside.<br><br>"
+          "Put the api key for <a href=\"https://exchangeratesapi.io\">exchangeratesapi.io</a>,<br>"
+          "Then on a new line, the api key for <a href=\"https://marketstack.com\">marketstack.com</a>.");
+    QMetaObject::invokeMethod(this, "close", Qt::QueuedConnection);
+    return;
+  }
 
   Map *map = new Map;
 
-  infosMonnaie *infoBox = new infosMonnaie(currencies);
+  infosMonnaie *infoBox = new infosMonnaie(infos);
 
-  List *list = new List(currencies);
+  List *list = new List(infos->getCurrencyList());
   QSizePolicy sp = list->sizePolicy();
   sp.setHorizontalPolicy(QSizePolicy::Maximum);
   list->setSizePolicy(sp);
@@ -78,9 +90,9 @@ StonksLand::StonksLand(QWidget *parent)
     list->scrollToItem(item);
   });
 
-    list->setCurrentRow(0);
+  list->setCurrentRow(0);
 
-    setLayout(vlayout);
+  setLayout(vlayout);
 }
 
 StonksLand::~StonksLand()

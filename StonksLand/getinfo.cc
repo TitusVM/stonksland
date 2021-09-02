@@ -5,7 +5,7 @@
 
 #include "csv.h"
 
-GetInfo::GetInfo(QString filename): countries(), currencies() {
+GetInfo::GetInfo(QString filename, QString keys): countries(), currencies() {
   QFile file(filename);
   file.open(QFile::OpenModeFlag::ReadOnly);
   std::vector<std::vector<std::string>> table = readCSV(file);
@@ -35,6 +35,13 @@ GetInfo::GetInfo(QString filename): countries(), currencies() {
 
     countries.push_back(Country(countryName, currency));
   }
+
+  QFile keysFile(keys);
+  keysFile.open(QFile::ReadOnly);
+  exchangeratesapiApiKey = keysFile.readLine();
+  exchangeratesapiApiKey = exchangeratesapiApiKey.trimmed();
+  marketstackApiKey = keysFile.readLine();
+  marketstackApiKey = marketstackApiKey.trimmed();
 }
 
 std::vector<Country> GetInfo::findCountries(Currency currency) {
@@ -76,5 +83,13 @@ Currency GetInfo::findCurrency(QString name) {
 
 std::vector<Currency> GetInfo::getCurrencyList() const {
   return currencies;
+}
+
+QString GetInfo::getExchangeratesapiApiKey() const {
+  return exchangeratesapiApiKey;
+}
+
+QString GetInfo::getMarketstackApiKey() const {
+  return marketstackApiKey;
 }
 
