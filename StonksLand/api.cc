@@ -12,11 +12,11 @@ Api::Api(QString key): key(key)
 
 QString Api::dl() {
   QEventLoop loop;
-  QNetworkAccessManager *manager = new QNetworkAccessManager();
-  QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+  QNetworkAccessManager manager;
+  QObject::connect(&manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
   QNetworkRequest request;
   request.setUrl(QUrl("http://api.exchangeratesapi.io/v1/latest?access_key=" + key + "&base=EUR"));
-  QNetworkReply* reply = manager->get(request);
+  QNetworkReply* reply = manager.get(request);  // reply is owned by manager
   loop.exec();
   QString answer = reply->readAll();
   return answer;
@@ -24,11 +24,11 @@ QString Api::dl() {
 
 QString Api::dl(QDate date) {
   QEventLoop loop;
-  QNetworkAccessManager *manager = new QNetworkAccessManager();
-  QObject::connect(manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+  QNetworkAccessManager manager;
+  QObject::connect(&manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
   QNetworkRequest request;
   request.setUrl(QUrl("http://api.exchangeratesapi.io/v1/" + date.toString("yyyy-MM-dd") + "?access_key=" + key + "&base=EUR"));
-  QNetworkReply* reply = manager->get(request);
+  QNetworkReply* reply = manager.get(request);  // reply is owned by manager
   loop.exec();
   QString answer = reply->readAll();
   return answer;

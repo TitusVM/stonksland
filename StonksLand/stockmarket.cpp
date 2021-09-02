@@ -21,17 +21,17 @@ StockMarket::StockMarket(QWidget*, QString marketIndex)
 {
     if (!cache.contains(marketIndex)) {
       qDebug() << "Cache for" << marketIndex << "outdated, updating...";
-      QNetworkRequest *request = new QNetworkRequest;
-      QNetworkAccessManager *nam = new QNetworkAccessManager;
+      QNetworkRequest request;
+      QNetworkAccessManager nam;
 
       QEventLoop loop;
-      QObject::connect(nam, SIGNAL(finished(QNetworkReply*)),
+      QObject::connect(&nam, SIGNAL(finished(QNetworkReply*)),
                        &loop,
                        SLOT(quit()));
 
       /* Response json readAll */
-      request->setUrl(QUrl("http://api.marketstack.com/v1/eod?access_key=67bfbdb0d61ec2fb08a7f34b6d1f7b32&symbols=" + marketIndex));
-      QNetworkReply *reply = nam->get(*request);
+      request.setUrl(QUrl("http://api.marketstack.com/v1/eod?access_key=67bfbdb0d61ec2fb08a7f34b6d1f7b32&symbols=" + marketIndex));
+      QNetworkReply *reply = nam.get(request);  // reply is owned by nam
       loop.exec();
 
       if (reply->error())
@@ -61,7 +61,7 @@ void StockMarket::slotNetwManager()
                         );
 
     }
-    display(this->marketIndex, rates, "dd-MM", false);
+    display(this->marketIndex, rates, "dd-MM", false);  // takes ownership of rates
 }
 
 StockMarket::~StockMarket()

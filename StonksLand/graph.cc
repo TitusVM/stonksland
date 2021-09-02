@@ -55,7 +55,11 @@ void Graph::display(QString currencyIndex, QLineSeries* rates, QString dateForma
 
   chart->axes(Qt::Vertical).at(0)->setRange(lower, highest + 1);
 
+  /* QChartView::setChart(QChart*) releases ownership of the old chart without deleting it */
+  QChart* oldChart = this->chart();
   setChart(chart);
+  delete oldChart;
+
   setRenderHint(QPainter::Antialiasing);
   this->setMinimumHeight(200);
 }
