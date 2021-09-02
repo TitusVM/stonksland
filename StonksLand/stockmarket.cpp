@@ -16,7 +16,7 @@
 #include <QNetworkReply>
 #include <QUrl>
 
-StockMarket::StockMarket(QWidget*, QString marketIndex)
+StockMarket::StockMarket(QString marketIndex, QString key)
     : Graph(), cache("cache/stocks"), marketIndex(marketIndex)
 {
     if (!cache.contains(marketIndex)) {
@@ -30,7 +30,7 @@ StockMarket::StockMarket(QWidget*, QString marketIndex)
                        SLOT(quit()));
 
       /* Response json readAll */
-      request->setUrl(QUrl("http://api.marketstack.com/v1/eod?access_key=67bfbdb0d61ec2fb08a7f34b6d1f7b32&symbols=" + marketIndex));
+      request->setUrl(QUrl("http://api.marketstack.com/v1/eod?access_key=" + key + "&symbols=" + marketIndex));
       QNetworkReply *reply = nam->get(*request);
       loop.exec();
 

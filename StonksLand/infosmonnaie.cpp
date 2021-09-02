@@ -5,8 +5,8 @@
 #include "currencyexchanger.h"
 #include "stockmarket.h"
 
-infosMonnaie::infosMonnaie(std::vector<Currency> const& currencies): QWidget(),
-  cacheCurrent("cache/current"), cacheHistorical("cache/historical", INT_MAX), api("d5bbf30a2178fbd92e5af9ae731531fc")
+infosMonnaie::infosMonnaie(GetInfo const* infos): QWidget(),
+  cacheCurrent("cache/current"), cacheHistorical("cache/historical", INT_MAX), api(infos->getExchangeratesapiApiKey()), infos(infos)
 {
     if (!cacheCurrent.contains("current")) {
         cacheCurrent.add("current", api.dl());
@@ -73,7 +73,7 @@ infosMonnaie::infosMonnaie(std::vector<Currency> const& currencies): QWidget(),
 
     QGridLayout *grid = new QGridLayout;
 
-    CurrencyExchanger *currExch = new CurrencyExchanger(currentRates, currencies);
+    CurrencyExchanger *currExch = new CurrencyExchanger(currentRates, infos->getCurrencyList());
 
     grid->addWidget(countryLabel, 0, 0, 1, 1);
     grid->addWidget(currencyLabel, 1, 0, 1, 2);
@@ -120,15 +120,17 @@ void infosMonnaie::setInfos(QString country, QString currency, QString symbol, Q
 
 void infosMonnaie::showMarkets()
 {
+    QString apiKey = infos->getMarketstackApiKey();
+
     QHBoxLayout *stockHBoxTop = new QHBoxLayout;
     QHBoxLayout *stockHBoxBot = new QHBoxLayout;
     QHBoxLayout *stockHBoxCopyright = new QHBoxLayout;
     QVBoxLayout *stockVBox = new QVBoxLayout;
     stockWindow = new QWidget(this, Qt::Window);
-    StockMarket *stockDAX = new StockMarket(stockWindow, "DAX");
-    StockMarket *stockNASDAQ = new StockMarket(stockWindow, "NDAQ");
-    StockMarket *stockSMIC = new StockMarket(stockWindow, "0981.XHKG");
-    StockMarket *stockGOOG = new StockMarket(stockWindow, "GOOGL");
+    StockMarket *stockDAX = new StockMarket("DAX", apiKey);
+    StockMarket *stockNASDAQ = new StockMarket("NDAQ", apiKey);
+    StockMarket *stockSMIC = new StockMarket("0981.XHKG", apiKey);
+    StockMarket *stockGOOG = new StockMarket("GOOGL", apiKey);
 
     QLabel *copyright = new QLabel;
     QFont f( "Arial", 8, true);
@@ -142,10 +144,10 @@ void infosMonnaie::showMarkets()
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
 
-    StockMarket *stockINTC = new StockMarket(stockWindow, "INTC");
-    StockMarket *stockMSFT = new StockMarket(stockWindow, "MSFT");
-    StockMarket *stockAAPL = new StockMarket(stockWindow, "AAPL");
-    StockMarket *stockNOK = new StockMarket(stockWindow, "NOK");
+    StockMarket *stockINTC = new StockMarket("INTC", apiKey);
+    StockMarket *stockMSFT = new StockMarket("MSFT", apiKey);
+    StockMarket *stockAAPL = new StockMarket("AAPL", apiKey);
+    StockMarket *stockNOK = new StockMarket("NOK", apiKey);
 
     stockHBoxTop->addWidget(stockDAX);
     stockHBoxTop->addWidget(stockNASDAQ);

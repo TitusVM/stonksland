@@ -1,0 +1,2 @@
+replace this line with the https://exchangeratesapi.io api key
+replace this line with the https://marketstack.com api key
