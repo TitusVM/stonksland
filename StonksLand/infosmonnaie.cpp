@@ -4,6 +4,7 @@
 #include "infosmonnaie.h"
 #include "currencyexchanger.h"
 #include "stockmarket.h"
+#include "cryptomarket.h"
 
 infosMonnaie::infosMonnaie(GetInfo const* infos): QWidget(),
   cacheCurrent("cache/current"), cacheHistorical("cache/historical", INT_MAX), api(infos->getExchangeratesapiApiKey()), infos(infos)
@@ -61,14 +62,21 @@ infosMonnaie::infosMonnaie(GetInfo const* infos): QWidget(),
     showIndices = new QPushButton;
     showIndices->setIcon(QIcon("://data/icons/stock.png"));
     showIndices->setText("Display live markets");
-    showIndices->setStyleSheet("background: #009900; color: white; margin-left: 230px;");
+    showIndices->setStyleSheet("background: #009900; color: white; margin-left: 250px;");
+
+    showCrypto = new QPushButton;
+    showCrypto->setIcon(QIcon("://data/icons/crypto.png"));
+    showCrypto->setText("Display live crypto");
+    showCrypto->setStyleSheet("background: #009900; color: white; margin-left: 250px;");
 
     connect(showIndices, SIGNAL(clicked()), this, SLOT(showMarkets()));
+    connect(showCrypto, SIGNAL(clicked()), this, SLOT(showCryptos()));
 
     exchRate->resize(150,100);
 
     QFont f2( "Arial", 18, true);
     showIndices->setFont(f2);
+    showCrypto->setFont(f2);
 
 
     QGridLayout *grid = new QGridLayout;
@@ -89,6 +97,7 @@ infosMonnaie::infosMonnaie(GetInfo const* infos): QWidget(),
     grid->addWidget(graph, 0, 5, 5, 1);
     grid->addWidget(copyright, 4, 3, 1, 3);
     grid->addWidget(showIndices, 4, 4, 1, 1);
+    grid->addWidget(showCrypto, 5, 4, 1, 1);
 
 
     setLayout(grid);
@@ -168,6 +177,47 @@ void infosMonnaie::showMarkets()
 
     stockWindow->setLayout(stockVBox);
     stockWindow->show();
+}
+
+void infosMonnaie::showCryptos()
+{
+    QHBoxLayout *cryptoHBoxTop = new QHBoxLayout;
+    QHBoxLayout *cryptoHBoxBot = new QHBoxLayout;
+    QHBoxLayout *cryptoHBoxCopyright = new QHBoxLayout;
+    QVBoxLayout *cryptoVBox = new QVBoxLayout;
+    cryptoWindow = new QWidget(this, Qt::Window);
+    cryptoWindow->setAttribute(Qt::WA_DeleteOnClose);
+    CryptoMarket *cryptoBTC = new CryptoMarket("BTC");
+    CryptoMarket *cryptoETH = new CryptoMarket("ETH");
+    QTime dieTime= QTime::currentTime().addSecs(1);
+    while (QTime::currentTime() < dieTime)
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
+
+    QLabel *copyright = new QLabel;
+    QFont f( "Arial", 8, true);
+    copyright->setFont(f);
+    copyright->setStyleSheet("color:grey;");
+    copyright->setText("  Quotes by api.nomics.com");
+
+    CryptoMarket *cryptoUSDT = new CryptoMarket("TRX");
+    CryptoMarket *cryptoBUSD = new CryptoMarket("SOL");
+
+    cryptoHBoxTop->addWidget(cryptoBTC);
+    cryptoHBoxTop->addWidget(cryptoETH);
+
+    cryptoHBoxBot->addWidget(cryptoUSDT);
+    cryptoHBoxBot->addWidget(cryptoBUSD);
+
+    cryptoHBoxCopyright->addWidget(copyright);
+
+    cryptoVBox->addLayout(cryptoHBoxTop);
+    cryptoVBox->addLayout(cryptoHBoxBot);
+    cryptoVBox->addLayout(cryptoHBoxCopyright);
+
+    cryptoWindow->setLayout(cryptoVBox);
+    cryptoWindow->show();
 }
 
 infosMonnaie::~infosMonnaie()

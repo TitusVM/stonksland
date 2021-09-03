@@ -12,6 +12,7 @@ SOURCES += \
     api.cc \
     cache.cc \
     country.cc \
+    cryptomarket.cpp \
     csv.cc \
     currency.cc \
     currencyexchanger.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     api.h \
     cache.h \
     country.h \
+    cryptomarket.h \
     csv.h \
     currency.h \
     currencyexchanger.h \
@@ -52,3 +54,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     data.qrc
+
+DISTFILES +=

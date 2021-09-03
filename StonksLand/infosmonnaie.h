@@ -27,6 +27,7 @@ public:
 
 public slots:
     void showMarkets();
+    void showCryptos();
 
 private:
     QLineEdit *country;
@@ -35,12 +36,14 @@ private:
     QLineEdit *ISO;
     QLabel *countryFlagLabel;
     QPushButton *showIndices;
+    QPushButton *showCrypto;
     ExchangeRate *exchRate;
     Graph *graph;
     Cache cacheCurrent;
     Cache cacheHistorical;
     Api api;
     QWidget *stockWindow;
+    QWidget *cryptoWindow;
     GetInfo const* infos;
 };
 #endif // INFOSMONNAIE_H
