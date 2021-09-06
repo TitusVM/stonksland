@@ -32,6 +32,11 @@ There are two possibilities for installation:
 
 ## Usage
 
+Before the first start, create a file "keys.txt" in the same directory as the executable and put your api keys inside.
+Put the [exchangeratesapi.io](https://exchangeratesapi.io) api key,
+Then on a new line, put the [marketstack.io](https://marketstack.com/) api key.
+The file should be only two lines long with the api keys and nothing else.
+
 ![StonksLand](/uploads/716bc0f5865cf35f0dccd481c7cfb304/StonksLand.png)
 
 The usage of this app is very straightforward. 
